@@ -51,7 +51,7 @@ The method to acquire your credentials depends on your hosting type:
    If you are testing Stripe (in **test mode**), change the **State** to *Test Mode*. We recommend
    doing this on a test Odoo database rather than on your main database.
 
-.. _stripe/api_keys:
+.. _stripe/api-keys:
 
 Fill in your credentials
 ------------------------
@@ -59,8 +59,8 @@ Fill in your credentials
 In case your **API Credentials** are required to connect with your Stripe account, these are the
 credentials that must be completed:
 
-- :ref:`Publishable Key <stripe/api_keys>`: The key solely used to identify the account with Stripe.
-- :ref:`Secret Key <stripe/api_keys>`: The key to sign the merchant account with Stripe.
+- :ref:`Publishable Key <stripe/api-keys>`: The key solely used to identify the account with Stripe.
+- :ref:`Secret Key <stripe/api-keys>`: The key to sign the merchant account with Stripe.
 - :ref:`Webhook Signing Secret <stripe/webhook>`: When you enable your webhook on your Stripe
   account, this signing secret must be set to authenticate the messages sent from Stripe to Odoo.
 
@@ -112,6 +112,32 @@ create a webhook either automatically or manually.
       .. tip::
          To update an existing webhook, click on it. Then, click on the three dots at the right side
          of the **Webhook URL** and on :guilabel:`Update details`.
+
+Configuration tab
+-----------------
+
+.. _stripe/manual-capture:
+
+Place a hold on a card
+~~~~~~~~~~~~~~~~~~~~~~
+
+Stripe allows you to **capture an amount manually** instead of having an immediate capture. This
+feature earmarks an amount on the customer's account for a determined period of time that depends on
+the payment method used.
+
+To set it up, enable the :guilabel:`Capture Amount Manually` option on Odoo, as explained in the
+:ref:`payment acquirers documentation <payment_acquirers/capture_amount>`.
+
+.. warning::
+   When the manual capture feature is activated, your customers are not able to proceed with any
+   payment if unsupported payment methods are selected.
+
+.. caution::
+   Odoo doesn't support the partial capture yet. Be aware that a partial capture from Stripe's 
+   interface is still managed as a full capture by Odoo.
+
+.. seealso::
+   - :doc:`../payment_acquirers`
 
 .. _stripe/local-payment-methods:
 
