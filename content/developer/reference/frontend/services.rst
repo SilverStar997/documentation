@@ -120,6 +120,8 @@ Reference List
      - read or modify cookies
    * - :ref:`effect <frontend/services/effect>`
      - display graphical effects
+   * - :ref:`hotkey <frontend/services/hotkey>`
+     - keyboard shortcuts manager
    * - :ref:`http <frontend/services/http>`
      - perform low level http calls
    * - :ref:`notification <frontend/services/notification>`
@@ -346,6 +348,123 @@ Here, it is called in webclient.js to make it visible everywhere for the example
     :alt: Odoo in sepia
     :width: 600
     :align: center
+
+.. _frontend/services/hotkey:
+
+Hotkey Service
+--------------
+
+Overview
+~~~~~~~~
+
+* Technical name: `hotkey`
+* Dependencies: `ui`
+
+This service gives a way to react to hotkeys being pressed on a keyboard device.
+
+It also gives a simple declarative way to make elements discoverable and clickable
+on the webpage of Odoo: see :ref:`frontend/services/hotkey/data-hotkey-attribute`.
+
+.. note::
+   Hotkeys are not case sensitive but they must comply to these rules:
+
+   - each part is separated by the "+" character
+   - all parts are whitelisted
+   - "control", "shift" and "alt" modifiers:
+
+     - are optional
+     - can be combined
+     - must come first
+
+   Whitelist:
+
+   - Alphanumerics: a-z 0-9
+   - Navigational:
+
+     - "arrowleft", "arrowright", "arrowup", "arrowdown"
+     - "home", "end", "pageup", "pagedown"
+     - "tab", "enter", "escape", "backspace", "delete"
+
+   Some examples:
+
+   - "shift+tab"
+   - "tab" (modifiers are optional)
+   - "alt+control+d", "Control+Alt+D", "CONTROL+alt+d" are equivalent
+
+API
+~~~
+
+.. js:function:: add(hotkey, callback[, options])
+  
+    :param string hotkey: the hotkey we would like to get notified for
+    :param function callback: the hotkey we would like to get notified for
+    :param object options: the options of the notification
+    :returns: a function to call to clear the callback from the service
+
+    Adds a callback to be executed when the corresponding hotkey is pressed on the keyboard.
+
+    .. tip:: 
+       If you use this `add` function directly you HAVE to make sure you clear the callback at the
+       proper moment.
+       It is recommended you use the :ref:`useHotkey hook <frontend/hooks/usehotkey>` instead.
+
+    The options are defined by:
+
+    .. list-table::
+      :widths: 20 15 10 55
+      :header-rows: 1
+
+      * - Name
+        - Type
+        - Default value
+        - Description
+      * - `allowRepeat`
+        - boolean
+        - false
+        - The callback will continue to get called as long as the hotkey is being pressed.
+          Typical usage: arrows and other navigational keys.
+      * - `bypassEditableProtection`
+        - boolean
+        - false
+        - If true the hotkey service will call this registration
+          even if an editable element is focused
+      * - `global`
+        - boolean
+        - false
+        - A global hotkey callback will always get called no matter the UI active element.
+
+.. js:function:: registerIframe(iframe)
+
+    :param HTMLIFrameElement iframe: the iframe element we would like to register
+
+    Lets the hotkey service also handle the hotkeys being pressed within an iframe.
+
+.. _frontend/services/hotkey/data-hotkey-attribute:
+
+The `[data-hotkey]` attribute
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+This attribute can be used to easily add an hotkey to clickable elements, typically buttons.
+
+.. note:: 
+   This attribute accepts only one hotkey (case insensitive).
+
+.. note:: 
+   The `alt` modifier is required to activate any element having a `[data-hotkey]` attribute.
+   Pressing and holding the `alt` key will automatically display overlays on all the elements
+   having this attribute set.
+
+.. example:: 
+
+   .. code-block:: xml
+
+      <button t-on-click="() => this.cancel()" data-hotkey="c">
+       Click Me To cancel! (alt+c)
+      </button>
+
+      <button t-on-click="() => this.save()" data-hotkey="shift+s">
+       Click Me To Save! (alt+shift+s)
+      </button>
 
 .. _frontend/services/http:
 
