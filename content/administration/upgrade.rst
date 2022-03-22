@@ -42,7 +42,7 @@ The upgrade process in a nutshell:
 #. Odoo processes the request automatically by running the database through an upgrade script, which
    takes between 20 and 120 minutes.
 #. Odoo delivers a test database.
-#. You test your database for possible discrepancies (see :ref:`upgrade/test-guidance`)
+#. You test your database for possible discrepancies (see :ref:`upgrade/test-guidance`).
 #. If there are any discrepancies, you report them to the Upgrade support team via the help portal
    (see :ref:`upgrade/test-assistance`).
 #. We fix the issues and send you a new test database.
